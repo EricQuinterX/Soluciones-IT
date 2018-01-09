@@ -29,9 +29,9 @@ Por ejemplo:
 
 | Selec. | Codigo | Descripcion  | 
 | ------------- |:-------------:| -----:|
-| <input type="radio" />| right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+| <img src="media/edit.png" height="30" width="30"/>| 1 | Reclamo   |
+| <img src="media/edit.png" height="30" width="30"/>| 2 | Consulta  |
+| <img src="media/edit.png" height="30" width="30"/>| 3 | Tramite   |
 
 <b title="asdkasdhksajd">oooooooooooooo</b>
 
