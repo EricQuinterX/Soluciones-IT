@@ -27,11 +27,11 @@ Donde <b>deny</b> es una lista de columnas que no seran exportadas y <b>edit</b>
 
 Por ejemplo:
 
-| Selec. | Codigo | Descripcion  | Vigencia | Usuario  | Fecha Creacion  | Motivo  | Eliminar  |  
-| ------------- |:-------------:| --------:| ---------:| --------:| --------:| -----:|
-| <img src="media/edit.png" height="20" width="20"/>| 1 | Reclamo | <img class="activo" src="media/active.png" height="20" width="20" />  | peitong | 20-11-2017  | <b title="En caso de robo u otro acto delictuoso, que pueda ser motivo de reclamación al amparo de esta póliza, el Asegurado dará aviso">En caso de robo u otro ...</b> | <img src="media/cancelar.png" height="20" width="20"/> |
-| <img src="media/edit.png" height="20" width="20"/>| 2 | Consulta | <img class="inactivo" src="media/inactive.png" height="20" width="20" />  | slyd    | 05-06-2015  | <b title="La consulta de los precios con un lector de mano o un escáner horizontal se realiza automáticamente cotejando los archivos de las unidades, impidiendo así cualquier tipo de error">La consulta de los preci...</b> |  <img src="media/cancelar.png" height="20" width="20"/>  |
-| <img src="media/edit.png" height="20" width="20"/>| 3 | Tramite | <img class="activo" src="media/active.png" height="20" width="20" />   | prondinelli | 29-11-2016 | <b title="Paso que, junto con otros, debe realizarse de forma sucesiva para solucionar un asunto que requiere un proceso.">Paso que, junto con ...</b> | <img src="media/cancelar.png" height="20" width="20"/> |
+| Selec. | Codigo | Descripcion | Vigencia | Usuario | Fecha Creacion | Motivo | Eliminar |  
+| ------ |:------:| -----------:| --------:| -------:| --------------:| ------:|---------:|
+| <img src="media/edit.png" height="20" width="20"/>| 1 | Reclamo | <img class="activo" src="media/active.png" height="15" width="15" />  | peitong | 20-11-2017  | <b title="En caso de robo u otro acto delictuoso, que pueda ser motivo de reclamación al amparo de esta póliza, el Asegurado dará aviso">En caso de robo u otro ...</b> | <img src="media/cancelar.png" height="20" width="20"/> |
+| <img src="media/edit.png" height="20" width="20"/>| 2 | Consulta | <img class="inactivo" src="media/inactive.png" height="15" width="15" />  | slyd    | 05-06-2015  | <b title="La consulta de los precios con un lector de mano o un escáner horizontal se realiza automáticamente cotejando los archivos de las unidades, impidiendo así cualquier tipo de error">La consulta de los preci...</b> |  <img src="media/cancelar.png" height="20" width="20"/>  |
+| <img src="media/edit.png" height="20" width="20"/>| 3 | Tramite | <img class="activo" src="media/active.png" height="15" width="15" />   | prondinelli | 29-11-2016 | <b title="Paso que, junto con otros, debe realizarse de forma sucesiva para solucionar un asunto que requiere un proceso.">Paso que, junto con ...</b> | <img src="media/cancelar.png" height="20" width="20"/> |
 
 <b title="asdkasdhksajd">oooooooooooooo</b>
 
