@@ -6,7 +6,8 @@ function ExportToExcel(gridIndex, opts){
         var allDivTags = document.getElementsByTagName("DIV");
         if (allDivTags) {
             for (var i = 0; i < allDivTags.length; i++) {
-                if (allDivTags[i].getAttribute("name") == 'sqlTableDiv' || allDivTags[i].getAttribute("name") == 'sqlGridDiv') {
+                var divName = allDivTags[i].getAttribute("name");
+                if (divName == 'sqlTableDiv' || divName == 'sqlGridDiv' || divName == 'sqlFilteredGridDiv') {
                     var id = "EngageGrid_" + gridsCount;
                     allGridsIds.push(id);
                     allDivTags[i].id = id;
@@ -18,8 +19,9 @@ function ExportToExcel(gridIndex, opts){
 
     if (allGridsIds.length > 0) {
         if ((gridIndex >= 0) && (gridIndex < gridsCount)) {
-            
+
             var newGridId = allGridsIds[gridIndex];
+            newGridId = QuitarCombosDeGrillaFiltrada(newGridId); // Si es grilla filtrada, quitara los combos de los headers
             newGridId = (opts && opts.edit) ? EditarCeldas(newGridId, opts.edit) : newGridId;
             newGridId = (opts && opts.deny) ? EliminarColumnas(newGridId, opts.deny) : newGridId;
 
@@ -35,20 +37,33 @@ function ExportToExcel(gridIndex, opts){
     }
 */
 
+
+//////////////////////////////////     CORE        /////////////////////////////////////////////////
+
+function CrearGrillaNueva(divGrid) {
+    var div = document.getElementById('grilla_filtrada');
+    if (!div) {
+        var newDiv = document.createElement("div");     // creo un nuevo div
+        newDiv.setAttribute("id", "grilla_filtrada");   // lo identifico al div
+        newDiv.style.visibility = 'hidden';             // lo pongo invisible en la pantalla
+        newDiv.appendChild(divGrid);                    // agrego la grilla con los cambios en esta
+        document.body.appendChild(newDiv);              // la grilla creada lo pongo en la pantalla
+    } else {
+        div.innerHTML = '';         // vacio su contenido
+        div.appendChild(divGrid);   // agrego con un nuevo contenido
+    }
+}
+
+
 function EditarCeldas(gridId, edit){
     var divGrilla = document.getElementById(gridId);
-    var divCloneGrilla = divGrilla.cloneNode(true); // clono la original grilla para no alterar sus datos
+    var divCloneGrilla = divGrilla.cloneNode(true);     // clono la original grilla para no alterar sus datos
     divCloneGrilla.id = divCloneGrilla.id + '_edit';    // le asigno un nuevo id al clon
     var divName = divCloneGrilla.getAttribute("name");
-    var index;
-
-    if (divName === 'sqlTableDiv' || divName === 'sqlGridDiv'){
-        index = (divName === 'sqlTableDiv') ? 0 : 1;
-    } else { return gridId; } // De lo contrario, sale de la funcion con el id original de la grilla.
 
     // Selecciono la tabla correspondiente.
     // Si index es 0 => tipo tabla; si es 0 => tipo grilla
-    var tabla = divCloneGrilla.getElementsByTagName('table')[index];
+    var tabla = divCloneGrilla.getElementsByTagName('table')[(divName === 'sqlTableDiv') ? 0 : 1];
     
     // valido si el segundo parametro se ingreso.
     if (!edit.length) return gridId;
@@ -65,11 +80,7 @@ function EditarCeldas(gridId, edit){
             }
         }
 
-        var divGrillaFiltrada = document.getElementById('grilla_filtrada');
-        divGrillaFiltrada.innerHTML = '';
-    
-        // Inserto la nueva grilla en un DIV html en la pantalla de Engage
-        divGrillaFiltrada.appendChild(divCloneGrilla);
+        CrearGrillaNueva(divCloneGrilla);
         return divCloneGrilla.id;
     } else {
         return gridId;
@@ -133,23 +144,107 @@ function EliminarColumnas(gridId, deny){
         EliminarColumnasEnTabla(1);
         break;
 
+        case "sqlFilteredGridDiv":
+        EliminarColumnasEnTabla(0);
+        EliminarColumnasEnTabla(1);
+        break;
+        
         default:
         return gridId;
     }
     
-    var divGrillaFiltrada = document.getElementById('grilla_filtrada');
-    divGrillaFiltrada.innerHTML = '';
-
-    var tipo = divGrilla.getAttribute("name");
-    
-    if (tipo === 'sqlTableDiv' || tipo === 'sqlGridDiv'){
-        var index = (tipo === 'sqlTableDiv') ? 0 : 1;
-        var tabla = divCloneGrilla.getElementsByTagName('table')[index];
-        if (tabla.tHead || tabla.tBodies[0]){
-            divGrillaFiltrada.appendChild(divCloneGrilla);
-            return divCloneGrilla.id;    
-        }
-    }
-    // Por las dudas, si no entro al IF anterior, retorna el id original de la grilla.
-    return gridId;
+    CrearGrillaNueva(divCloneGrilla);
+    return divCloneGrilla.id;
 }
+
+function QuitarCombosDeGrillaFiltrada(gridId) {
+    var div = document.getElementById(gridId);
+    
+    if (div.getAttribute("name") === 'sqlFilteredGridDiv'){
+        // Quito la fila donde estan los combos
+        var divCloneGrilla = div.cloneNode(true);
+        divCloneGrilla.id = gridId + '_filt';
+        var tabla = divCloneGrilla.getElementsByTagName('table')[0];
+        var tr1 = tabla.getElementsByTagName('tr')[1];
+        if (!tr1) return gridId;
+        tr1.parentNode.removeChild(tr1);
+        CrearGrillaNueva(divCloneGrilla);
+        return divCloneGrilla.id;
+    } else {
+        return gridId;
+    }
+    
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+///////////////////////////////////////// Funciones Auxiliares /////////////////////////////////////
+
+function CambiarTitleATexto(td){
+    var hijo = td.getElementsByTagName('label')[0] || td.getElementsByTagName('div')[0];
+    if (!hijo) return;
+    td.innerHTML = hijo.title;
+}
+
+function CambiarImagenATexto(td){
+    var img = td.getElementsByTagName('IMG')[0];
+    if (!img) return;
+    td.innerHTML = img.title || img.getAttribute('class') || '' ;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////       PLUGINS   //////////////////////////////////////////
+/*
+    En caso de integrar grillas con BuildAjax***, SetGridSelected() guardará en un input html escondido un valor,
+    para que despues con la función GetOptsByGrid() obtener los opts de la grilla elegida segun un dataset.
+
+    El dataset debe contener, por ejemplo:
+    var dataset = 
+    [
+        {
+            grid: 'GRILLA_01',
+            deny: [1,7],
+            edit: [[6,CambiarTitleATexto],[7,CambiarImagenATexto]],
+            defecto: true
+        },
+        {
+            grid: 'GRILLA_02',
+            deny: [1,7],
+            edit: [[6,CambiarImagenATexto]]
+        }
+    ];
+*/
+
+function SetGridSelected(valor, idInput) {
+    var store = document.getElementById(idInput);
+    if (!store) {
+        store = document.createElement('input');
+        store.id = idInput;
+        store.type = 'hidden';
+        document.body.appendChild(store);
+    }
+    store.value = valor;
+}
+
+function GetOptsByGrid(idInput, dataset) {
+    var opts;
+    var store = document.getElementById(idInput) || 'defecto';
+    for (var i = 0; i < dataset.length; i++) {
+        if (store === 'defecto' && dataset[i].defecto) {
+            opts = { deny: dataset[i].deny, edit: dataset[i].edit };
+            break;
+        } else {
+            if (dataset[i].grid === store.value) {
+                opts = { deny: dataset[i].deny, edit: dataset[i].edit };
+                break;
+            }
+        }   
+    }    
+    return opts;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
