@@ -1,6 +1,9 @@
 # Guia de Uso del ExportToExcel_Alternativo
 
-La funcion definida en el archivo llamada <b>ExportToExcel</b>
+## Resumen
+Sirve para exportar contenido y manipular los datos de cada columna de una grilla de Engage. Tal material funciona para metadata de tipo `Tabla, Grilla y Grilla Filtrada`.
+
+La funcion definida en el archivo llamado <b>ExportToExcel</b>
 ```javascript
 function ExportToExcel(gridIndex, opts){
   /* Code */
@@ -36,15 +39,42 @@ function CambiarTitleATexto(td){
     td.innerHTML = hijo.title;
 }
 ```
-El parametro de entrada `td`, representa una celda de tabla.
+El parametro de entrada `td`, representa una celda de tabla. Una estructura similar a una tabla seria:
+```html
+<table>
+  <thead>
+    <tr>...</tr>
+    ...
+  </thead>
+  <tbody>
+    <tr>
+      <td><div>45684</div></td>
+      <td><label>Mesa</label></td>
+      <td>Silla</td>
+      ...
+    </tr>
+    ...
+  </tbody>
+</table>
+```
 
+## Invocación y Uso
+### Archivos
+1. Copiar y pegar `/src/ExportToExcel_Alternativo.js` en la carpeta `Contenidos`.
 
+### Designer
+1. Poner un elemento `Tabla` del Designer en la pantalla.
+<img src="media/Grilla tipo tabla SP_01.png"/>
+2. Agregar otro elemento `Html` y escribir la referencia del archivo js de arriba.
+`<script src="./../Contenidos/ExportToExcel_Alternativo.js"></script>`
+3. Agregar un elemento `Html` y dentro escribir algo asi:
+`<img style="cursor:pointer" src="./../fotos/***/xlsicon.gif" onclick="ExportToExcel(0)"/>`
 
 
 Por ejemplo:
 
 <img src="media/Grilla tipo tabla SP_01.png"/>
-
+`<img style="cursor:pointer" src="./../fotos/Galicia_Seguros/xlsicon.gif" onclick="ExportToExcel(0)"/>`
 1. Copiar y Pegar el archivo src/<b>ExportToExcel_Alternativo.js</b> en `./../Contenidos/`
 2. Agregar en la pantalla 3 elementos HTML de Engage:
     1. `<script src="./../Contenidos/ExportToExcel_Alternativo.js"></script>`
