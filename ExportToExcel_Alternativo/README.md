@@ -6,8 +6,8 @@ function ExportToExcel(gridIndex, opts){
   /* Code */
 }
 ```
-### Parametros
-#### gridIndex 
+## Parametros
+### gridIndex 
 Es el orden secuencial de la grilla a exportar *(como usa el ExportToExcel original)*.
 ```javascript
 ExportToExcel(0);
@@ -15,7 +15,7 @@ ExportToExcel(1);
 ExportToExcel(4);
 ```
 
-#### opts
+### opts
 Este parametro opcional es un objeto js que tiene 2 atributos:
 ```javascript
 { // Ejemplo
@@ -23,18 +23,27 @@ Este parametro opcional es un objeto js que tiene 2 atributos:
   edit: [[2, mostrarTitle], [5, estadoToString]]
 }
 ```
-Donde <b>deny</b> es una lista de columnas que no seran exportadas y <b>edit</b> es otra lista que edita/modifica el contenido de la celda de una columna en otro.
+#### deny
+Es un array numérico que representa las columnas que no seran exportadas.
+#### edit
+Es otro array de arrays que edita/modifica el contenido de la celda en toda una columna específica.
+Dentro del array tiene que estar el número de la columna y el nombre de la funcion transformadora.
+Las funciones deben tener un parametro de entrada porque siempre se la manda un valor dentro del código. No necesariamente deben devolver un resultado ya que es una operación mutable. Por ejemplo una definición valida puede ser:
+```javascript
+function CambiarTitleATexto(td){
+    var hijo = td.getElementsByTagName('label')[0] || td.getElementsByTagName('div')[0];
+    if (!hijo) return;
+    td.innerHTML = hijo.title;
+}
+```
+El parametro de entrada `td`, representa una celda de tabla.
+
+
+
 
 Por ejemplo:
 
-| Selec. | Codigo | Descripcion | Vigencia | Usuario | Fecha Creacion | Motivo | Eliminar |  
-| ------ |:------:| -----------:| --------:| -------:| --------------:| ------:|---------:|
-| <img src="media/edit.png" height="20" width="20"/>| 1 | Reclamo | <img class="activo" src="media/active.png" height="15" width="15" />  | peitong | 20-11-2017  | <b title="En caso de robo u otro acto delictuoso, que pueda ser motivo de reclamación al amparo de esta póliza, el Asegurado dará aviso">En caso de robo u otro ...</b> | <img src="media/cancelar.png" height="20" width="20"/> |
-| <img src="media/edit.png" height="20" width="20"/>| 2 | Consulta | <img class="inactivo" src="media/inactive.png" height="15" width="15" />  | slyd    | 05-06-2015  | <b title="La consulta de los precios con un lector de mano o un escáner horizontal se realiza automáticamente cotejando los archivos de las unidades, impidiendo así cualquier tipo de error">La consulta de los preci...</b> |  <img src="media/cancelar.png" height="20" width="20"/>  |
-| <img src="media/edit.png" height="20" width="20"/>| 3 | Tramite | <img class="activo" src="media/active.png" height="15" width="15" />   | prondinelli | 29-11-2016 | <b title="Paso que, junto con otros, debe realizarse de forma sucesiva para solucionar un asunto que requiere un proceso.">Paso que, junto con ...</b> | <img src="media/cancelar.png" height="20" width="20"/> |
-
-<b title="asdkasdhksajd">oooooooooooooo</b>
-
+<img src="media/Grilla tipo tabla SP_01.png"/>
 
 1. Copiar y Pegar el archivo src/<b>ExportToExcel_Alternativo.js</b> en `./../Contenidos/`
 2. Agregar en la pantalla 3 elementos HTML de Engage:
