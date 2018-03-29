@@ -1,9 +1,9 @@
 # Guia de Uso del ExportToExcel_Alternativo
 
 ## Resumen
-Sirve para exportar contenido y manipular los datos de cada columna de una grilla de Engage. Tal material funciona para metadata de tipo `Tabla, Grilla y Grilla Filtrada`.
+Sirve para exportar contenido y manipular los datos de cada columna de una grilla de Engage. Tal material funciona para metadata de tipo **Tabla**, **Grilla** y **Grilla Filtrada**.
 
-La funcion definida en el archivo llamado <b>ExportToExcel</b>
+La función definida en el archivo llamado <b>ExportToExcel</b>
 ```javascript
 function ExportToExcel(gridIndex, opts){
   /* Code */
@@ -29,7 +29,7 @@ Este parametro opcional es un objeto js que tiene 2 atributos:
 #### deny
 Es un array numérico que representa las columnas que no seran exportadas.
 #### edit
-Es otro array de arrays que edita/modifica el contenido de la celda en toda una columna específica.
+Es otro array de arrays que edita/modifica el contenido de la celda en toda una o varias columnas específicas.
 Dentro del array tiene que estar el número de la columna y el nombre de la funcion transformadora.
 Las funciones deben tener un parametro de entrada porque siempre se la manda un valor dentro del código. No necesariamente deben devolver un resultado ya que es una operación mutable. Por ejemplo una definición valida puede ser:
 ```javascript
@@ -39,7 +39,7 @@ function CambiarTitleATexto(td){
     td.innerHTML = hijo.title;
 }
 ```
-El parametro de entrada `td`, representa una celda de tabla. Una estructura similar a una tabla seria:
+El parametro de entrada `td`, representa una celda de tabla. Este es el esqueleto que representa una tabla:
 ```html
 <table>
   <thead>
@@ -57,6 +57,7 @@ El parametro de entrada `td`, representa una celda de tabla. Una estructura simi
   </tbody>
 </table>
 ```
+Usted puede crear la funcion que quiera para alterar los datos de todas las celdas de una columna.
 
 ## Invocación y Uso
 ### Archivos
@@ -64,10 +65,10 @@ El parametro de entrada `td`, representa una celda de tabla. Una estructura simi
 
 ### Designer
 1. Poner un elemento `Tabla` del Designer en la pantalla.
-<img src="media/Grilla tipo tabla SP_01.png"/>
-2. Agregar otro elemento `Html` y escribir la referencia del archivo js de arriba.
+_(poner imagen)_
+2. Agregar un elemento **Html** y escribir la referencia del archivo js de arriba.
 `<script src="./../Contenidos/ExportToExcel_Alternativo.js"></script>`
-3. Agregar un elemento `Html` y dentro escribir algo asi:
+3. Agregar otro elemento **Html** y dentro escribir algo asi para representar un icono o boton de descarga:
 `<img style="cursor:pointer" src="./../fotos/***/xlsicon.gif" onclick="ExportToExcel(0)"/>`
 
 
