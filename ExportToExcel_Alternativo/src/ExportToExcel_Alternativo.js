@@ -1,4 +1,4 @@
-function ExportToExcel(gridIndex, opts){
+﻿function ExportToExcel(gridIndex, opts){
     var allGridsIds = null;
     var gridsCount = 0;
     if (!allGridsIds) {
@@ -182,18 +182,18 @@ function QuitarCombosDeGrillaFiltrada(gridId) {
 
 ///////////////////////////////////////// Funciones Auxiliares /////////////////////////////////////
 
-function CambiarTitleATexto(td){
-    var hijo = td.getElementsByTagName('label')[0] || td.getElementsByTagName('div')[0];
+function TooltipToText(td){
+    var hijo = td.getElementsByTagName('label')[0] || td.getElementsByTagName('div')[0] || td.getElementsByTagName('IMG')[0];
     if (!hijo) return;
-    td.innerHTML = hijo.title;
+    td.innerHTML = hijo.title || hijo.innerText;
 }
-
+/*
 function CambiarImagenATexto(td){
     var img = td.getElementsByTagName('IMG')[0];
     if (!img) return;
     td.innerHTML = img.title || img.getAttribute('class') || '' ;
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
