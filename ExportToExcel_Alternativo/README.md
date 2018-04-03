@@ -1,4 +1,4 @@
-# Guia de Uso del ExportToExcel_Alternativo
+# ExportToExcel_Alternativo
 
 ## Resumen
 Sirve para exportar contenido y manipular los datos de cada columna de una grilla de Engage. Tal material funciona para grillas de tipo **Tabla**, **Grilla** y **Grilla Filtrada**.
@@ -66,7 +66,7 @@ Si exportamos de la forma tradicional, apareceran imagenes rotas en el excel, ej
 _imagen del excel roto_
 
 ### Pasos
-1. Copiar y pegar `/src/ExportToExcel_Alternativo.js` en la carpeta `Contenidos`.
+1. Copiar y pegar el archivo `/src/ExportToExcel_Alternativo.js` en la carpeta `Contenidos`.
 2. Poner un elemento **Tabla del Designer** en la pantalla. Setearle la ejecucion de un Stored Procedure.  
 _(poner imagen)_
 3. Agregar un elemento **Html** y escribir la referencia del archivo js de arriba.  
