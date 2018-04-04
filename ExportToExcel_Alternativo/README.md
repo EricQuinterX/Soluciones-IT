@@ -31,7 +31,7 @@ Dentro del sub-array tiene que estar el número de la columna y el nombre de la 
 Las funciones deben tener un parametro de entrada porque siempre se le manda un valor dentro del código. No necesariamente deben devolver un resultado ya que es una operación mutable. Por ejemplo una definición valida para una función puede ser:
 ```javascript 
 // Si la celda tiene un elemento label o div va a mostrar en el excel la descripcion del title si es que tiene.
-function TooltipToText(td){
+function GetTooltip(td){
     var hijo = td.getElementsByTagName('label')[0] || td.getElementsByTagName('div')[0] || td.getElementsByTagName('IMG')[0];
     if (!hijo) return;
     td.innerHTML = hijo.title || hijo.innerText;
@@ -42,7 +42,7 @@ function TooltipToText(td){
 ## Uso típico
 Usualmente se quiere mostrar **X grillas separadas** en pantalla y brindar la posibilidad de exportar los datos. Cada uno tendra su boton o icono para exportarlo. Las grillas pueden ser de tipo Tabla, Grilla y Grilla Filtrada. Pero muchas veces las grillas traen imagenes, iconos, radio-buttons, checkbox o textos acotados con tooltip incorporados.
 Si exportamos de la forma tradicional, apareceran imagenes rotas en el excel, ej:  
-_imagen del excel roto_
+<img src="media/export_horrible.png">
 
 ### Pasos
 1. Copiar y pegar el archivo `/src/ExportToExcel_Alternativo.js` en la carpeta `Contenidos`.
@@ -59,16 +59,24 @@ Esta grilla tiene la columna 1 y 7 con imagenes, y la columna 6 y 7 con <b title
 ```javascript
 {
   deny: [1],
-  edit: [[6,TooltipToText],[7,TooltipToText]]
+  edit: [[6,GetTooltip],[7,GetTooltip]]
 }
 ```
 La etiqueta con la invocación quedaria de esta forma:
 
 ```html
-<img src="./xlsx.png" onclick="ExportToExcel(0,{deny:[1],edit:[[6,TooltipToText],[7,TooltipToText]]})"/>
-```  
-
+<img src="./icon-excel.png" onclick="ExportToExcel(0,{deny:[1],edit:[[6,GetTooltip],[7,GetTooltip]]})"/>
+```
+Finalmente, la grilla exportada quedaria así:
+<img src="media/export_tabla_ok.png">  
+Los links se muestran completos, la 1ra columna se omitió y la imagen de vigencia se mapeo a texto. :+1:
+  
+  
 ## Uso Avanzado _(BuildAjaxTable, BuildAjaxGrid, BuildAjaxGridFiltered)_
+Cuando un grupo de grillas se cargan por medio de Ajax, las **opts** de cada uno pueden variar.  
+Por ejemplo, vamos a integrar 3 grillas de tipo grilla filtrada con el BuildAjaxGridFiltered:
+
+
 Este apartado esta dedicado para las pantallas donde utilizan grillas con el **BuildAjax...**. Esa funcion carga las grillas sin refrescar la pantalla y como el contenido de las grillas son distintas, el icono de Exportar debe realizar acciones distintas para cada uno.  
 Por ejemplo, existe un grilla con 3 BuildAjaxTable de SPs:  
 La **1ra** tiene 3 columnas, **2da** tiene 6 columnas y **3ra** 10. 
