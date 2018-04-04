@@ -182,7 +182,7 @@ function QuitarCombosDeGrillaFiltrada(gridId) {
 
 ///////////////////////////////////////// Funciones Auxiliares /////////////////////////////////////
 
-function TooltipToText(td){
+function GetTooltip(td){
     var hijo = td.getElementsByTagName('label')[0] || td.getElementsByTagName('div')[0] || td.getElementsByTagName('IMG')[0];
     if (!hijo) return;
     td.innerHTML = hijo.title || hijo.innerText;
@@ -208,13 +208,13 @@ function CambiarImagenATexto(td){
         {
             grid: 'GRILLA_01',
             deny: [1,7],
-            edit: [[6,CambiarTitleATexto],[7,CambiarImagenATexto]],
-            defecto: true
+            edit: [[6,GetTooltip],[7,GetTooltip]],
+            defecto: true // cuando entra por 1ra vez, cual es la grilla que exportara
         },
         {
             grid: 'GRILLA_02',
             deny: [1,7],
-            edit: [[6,CambiarImagenATexto]]
+            edit: [[6,GetTooltip]]
         }
     ];
 */
