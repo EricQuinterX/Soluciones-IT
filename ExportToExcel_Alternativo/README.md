@@ -49,12 +49,12 @@ Si exportamos de la forma tradicional, apareceran imagenes rotas en el excel, ej
 2. Poner un elemento **Tabla del Designer** en la pantalla. Setearle la ejecucion de un Stored Procedure.  
 3. Agregar un elemento **Html** y escribir la referencia del archivo js de arriba.  
 `<script src="./../Contenidos/ExportToExcel_Alternativo.js"></script>`
-4. Agregar otro elemento **Html** y dentro escribir alguna etiqueta html con la **invocación de la función**.
+4. Agregar otro elemento **Html** y dentro escribir alguna etiqueta con la **invocación de la función**.
 5. Validar el trámite y limpiar la cache del navegador.
 
 ### Invocación de la función
-Por ejemplo, queremos exportar esta grilla de tipo Tabla.
-<img src="media/SP_01_tabla.png">  
+Por ejemplo, queremos exportar esta grilla de tipo Tabla.  
+<img src="media/grilla_01_tabla.png">  
 Esta grilla tiene la columna 1 y 7 con imagenes, y la columna 6 y 7 con <b title="Los tooltips son utiles para no mostrar todo el texto en la pantalla">tooltips</b>. Lo que vamos hacer es remover la columna 1 y mostrar el atributo title (si existe) de la columna 6 y 7. Para eso en el 2do parametro de la función pasaremos:
 ```javascript
 {
@@ -70,17 +70,25 @@ La etiqueta con la invocación quedaria de esta forma:
 Finalmente, la grilla exportada quedaria así:
 <img src="media/export_tabla_ok.png">  
 Los links se muestran completos, la 1ra columna se omitió y la imagen de vigencia se mapeo a texto. :+1:
-  
-  
-## Uso Avanzado _(BuildAjaxTable, BuildAjaxGrid, BuildAjaxGridFiltered)_
+<br/>
+<br/>
+## Uso Avanzado (BuildAjaxTable, BuildAjaxGrid, BuildAjaxGridFiltered)
 Cuando un grupo de grillas se cargan por medio de Ajax, las **opts** de cada uno pueden variar.  
 Por ejemplo, vamos a integrar 3 grillas de tipo grilla filtrada con el BuildAjaxGridFiltered:
+<img src="media/buildajaxgridfiltered.png"><br/>
+Cada grilla muestra estos datos:  
+<img src="media/grilla_01_tabla.png"><img src="media/grilla_02_tabla.png"><img src="media/grilla_03_tabla.png"><br/>
+
+### Pasos
+1. Copiar y pegar el archivo `/src/ExportToExcel_Alternativo.js` en la carpeta `Contenidos`.
+2. Poner un elemento **Tabla del Designer** en la pantalla. Setearle la ejecucion de un Stored Procedure.  
+3. Agregar un elemento **Html** y escribir la referencia del archivo js de arriba.  
+`<script src="./../Contenidos/ExportToExcel_Alternativo.js"></script>`
+4. Agregar otro elemento **Html** y dentro escribir alguna etiqueta con la **invocación de la función**.
+5. Validar el trámite y limpiar la cache del navegador.
 
 
-Este apartado esta dedicado para las pantallas donde utilizan grillas con el **BuildAjax...**. Esa funcion carga las grillas sin refrescar la pantalla y como el contenido de las grillas son distintas, el icono de Exportar debe realizar acciones distintas para cada uno.  
-Por ejemplo, existe un grilla con 3 BuildAjaxTable de SPs:  
-La **1ra** tiene 3 columnas, **2da** tiene 6 columnas y **3ra** 10. 
 
-Repetir los primeros 3 pasos del uso tipico.  
-* Crear un elemento **html Designer** que representa el icono para exportar.
-* Crear otro **html Designer** 
+
+
+
