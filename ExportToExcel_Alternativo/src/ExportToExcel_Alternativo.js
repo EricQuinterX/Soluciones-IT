@@ -203,11 +203,11 @@ function CambiarImagenATexto(td){
     para que despues con la función GetOptsByGrid() obtener los opts de la grilla elegida segun un dataset.
 
     El dataset debe contener, por ejemplo:
-    var dataset = 
+    var dataOpts = 
     [
         {
             grid: 'GRILLA_01',
-            deny: [1,7],
+            deny: [1],
             edit: [[6,GetTooltip],[7,GetTooltip]],
             defecto: true // cuando entra por 1ra vez, cual es la grilla que exportara
         },
@@ -230,16 +230,16 @@ function SetGridSelected(valor, idInput) {
     store.value = valor;
 }
 
-function GetOptsByGrid(idInput, dataset) {
+function GetOptsByGrid(idInput, dataOpts) {
     var opts;
     var store = document.getElementById(idInput) || 'defecto';
-    for (var i = 0; i < dataset.length; i++) {
-        if (store === 'defecto' && dataset[i].defecto) {
-            opts = { deny: dataset[i].deny, edit: dataset[i].edit };
+    for (var i = 0; i < dataOpts.length; i++) {
+        if (store === 'defecto' && dataOpts[i].defecto) {
+            opts = { deny: dataOpts[i].deny, edit: dataOpts[i].edit };
             break;
         } else {
-            if (dataset[i].grid === store.value) {
-                opts = { deny: dataset[i].deny, edit: dataset[i].edit };
+            if (dataOpts[i].grid === store.value) {
+                opts = { deny: dataOpts[i].deny, edit: dataOpts[i].edit };
                 break;
             }
         }   
