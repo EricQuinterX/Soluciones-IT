@@ -72,6 +72,9 @@ Finalmente, la grilla exportada quedaria así:
 Los links se muestran completos, la 1ra columna se omitió y la imagen de vigencia se mapeo a texto. :+1:
 <br/>
 <br/>
+
+
+
 ## Uso Avanzado (BuildAjaxTable, BuildAjaxGrid, BuildAjaxGridFiltered)
 Cuando un grupo de grillas se cargan por medio de Ajax, las **opts** de cada uno pueden variar.  
 Por ejemplo, vamos a integrar 3 grillas de tipo grilla filtrada con el BuildAjaxGridFiltered:
@@ -81,12 +84,19 @@ Cada grilla muestra estos datos:
 
 ### Pasos
 1. Copiar y pegar el archivo `/src/ExportToExcel_Alternativo.js` en la carpeta `Contenidos`.
-2. Poner un elemento **Tabla del Designer** en la pantalla. Setearle la ejecucion de un Stored Procedure.  
-3. Agregar un elemento **Html** y escribir la referencia del archivo js de arriba.  
+2. Poner un elemento **Tabla del Designer** en la pantalla. Setearle la ejecucion de un Stored Procedure por default.  
+3. Agregar un elemento html y escribir la referencia del archivo js de arriba.  
 `<script src="./../Contenidos/ExportToExcel_Alternativo.js"></script>`
-4. Agregar otro elemento **Html** y dentro escribir alguna etiqueta con la **invocación de la función**.
-5. Validar el trámite y limpiar la cache del navegador.
+4. Agregar luego del BuildAjaxdentro escribir alguna etiqueta con la Invocación del BuildAjax más el .
+5. Agregar otro elemento html que tendrá las opts de distintas grillas dentro del BuildAjax, llamado **dataOpts**.
+6. Agregar otro elemento html que sera la **Invocación del ExportToExcel**
+7. Validar el trámite y limpiar la cache del navegador.
 
+
+### Invocación del ExportToExcel y dataOpts (Paso 4 y 5)
+
+
+BuildAjaxFilteredGrid
 
 
 
