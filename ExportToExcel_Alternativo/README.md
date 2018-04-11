@@ -75,9 +75,9 @@ Los links se muestran completos, la 1ra columna se omitió y la imagen de vigenc
 
 
 
-## Uso Avanzado (BuildAjaxTable, BuildAjaxGrid, BuildAjaxGridFiltered)
+## Uso Avanzado (BuildAjaxTable, BuildAjaxGrid, BuildAjaxFilteredGrid)
 Cuando un grupo de grillas se cargan por medio de Ajax, las **opts** de cada uno pueden variar.  
-Por ejemplo, vamos a integrar 3 grillas de tipo grilla filtrada con el BuildAjaxGridFiltered:
+Por ejemplo, vamos a integrar 3 grillas de tipo grilla filtrada con el BuildAjaxFilteredGrid:
 <img src="media/buildajaxgridfiltered.png"><br/>
 Cada grilla muestra estos datos:  
 <img src="media/grilla_01_tabla.png"><img src="media/grilla_02_tabla.png"><img src="media/grilla_03_tabla.png"><br/>
@@ -99,6 +99,11 @@ Cada grilla muestra estos datos:
 BuildAjaxFilteredGrid
 
 
-
+<img src="media/filtro_grilla_01.png"><img src="media/excel_filtro_grilla_01.png">
+<br/>
+<img src="media/filtro_grilla_02.png"><img src="media/excel_filtro_grilla_02.png">
+<br/>
+<img src="media/filtro_grilla_03.png"><img src="media/excel_filtro_grilla_03.png">
+<br/>
 
 
