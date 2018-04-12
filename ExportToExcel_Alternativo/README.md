@@ -87,16 +87,51 @@ Cada grilla muestra estos datos:
 2. Poner un elemento **Tabla del Designer** en la pantalla. Setearle la ejecucion de un Stored Procedure por default.  
 3. Agregar un elemento html y escribir la referencia del archivo js de arriba.  
 `<script src="./../Contenidos/ExportToExcel_Alternativo.js"></script>`
-4. Agregar luego del BuildAjaxdentro escribir alguna etiqueta con la Invocación del BuildAjax más el .
-5. Agregar otro elemento html que tendrá las opts de distintas grillas dentro del BuildAjax, llamado **dataOpts**.
-6. Agregar otro elemento html que sera la **Invocación del ExportToExcel**
+4. Agregar etiquetas html que representaran las pestañas para cambiar de grillas.
+5. Agregar 1 etiqueta html que tendrá las opts de distintas grillas dentro del BuildAjax, llamado **dataOpts**.
+6. Agregar otro elemento html que sera el icono para la **Invocación del ExportToExcel**.
 7. Validar el trámite y limpiar la cache del navegador.
 
 
-### Invocación del ExportToExcel y dataOpts (Paso 4 y 5)
+#### Detalle del paso 4
+Ya que cada pestana tendra su propia grilla y cada una distintas restriccion (deny, edit), vamos a usar 2 funciones utiles:
+```javascript
+function SetGridSelected(valor, idInput) {
+    var store = document.getElementById(idInput);
+    if (!store) {
+        store = document.createElement('input');
+        store.id = idInput;
+        store.type = 'hidden';
+        document.body.appendChild(store);
+    }
+    store.value = valor;
+}
 
+function GetOptsByGrid(idInput, dataOpts) {
+    var opts;
+    var store = document.getElementById(idInput) || 'defecto';
+    for (var i = 0; i < dataOpts.length; i++) {
+        if (store === 'defecto' && dataOpts[i].defecto) {
+            opts = { deny: dataOpts[i].deny, edit: dataOpts[i].edit };
+            break;
+        } else {
+            if (dataOpts[i].grid === store.value) {
+                opts = { deny: dataOpts[i].deny, edit: dataOpts[i].edit };
+                break;
+            }
+        }   
+    }    
+    return opts;
+}
+```
+Dentro del html puede ir una imagen u otro tag pero la accion que tiene que realizar debe ser de cada una.
+```html
+<img src="../fotos/grilla01.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',ctl,null,false,0,0,false);SetGridSelected('GRILLA_01','grid-selected')"/>
+<img src="../fotos/grilla01.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',ctl,null,false,0,0,false);SetGridSelected('GRILLA_01','grid-selected')"/>
+<img src="../fotos/grilla01.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',ctl,null,false,0,0,false);SetGridSelected('GRILLA_01','grid-selected')"/>
 
-BuildAjaxFilteredGrid
+```
+
 
 
 <img src="media/filtro_grilla_01.png"><img src="media/excel_filtro_grilla_01.png">
