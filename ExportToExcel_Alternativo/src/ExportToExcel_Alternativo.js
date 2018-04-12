@@ -197,7 +197,7 @@ function CambiarImagenATexto(td){
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-/////////////////////////////////       PLUGINS   //////////////////////////////////////////
+/////////////////////////////////   PLUGINS   //////////////////////////////////////////
 /*
     En caso de integrar grillas con BuildAjax***, SetGridSelected() guardará en un input html escondido un valor,
     para que despues con la función GetOptsByGrid() obtener los opts de la grilla elegida segun un dataset.
@@ -207,44 +207,49 @@ function CambiarImagenATexto(td){
     [
         {
             grid: 'GRILLA_01',
-            deny: [1],
-            edit: [[6,GetTooltip],[7,GetTooltip]],
-            defecto: true // cuando entra por 1ra vez, cual es la grilla que exportara
+            opts: {
+                deny: [1],
+                edit: [[6,GetTooltip],[7,GetTooltip]]
+            }
+            defecto: 1 // cuando entra por 1ra vez, cual es la grilla que exportara
         },
         {
             grid: 'GRILLA_02',
-            deny: [1,7],
-            edit: [[6,GetTooltip]]
+            opts: {
+                deny: [1,7],
+                edit: [[6,GetTooltip]]
+            }
+        },
+        {
+            grid: 'GRILLA_03'
         }
     ];
 */
 
-function SetGridSelected(valor, idInput) {
-    var store = document.getElementById(idInput);
+function SaveGridId(valor, idStore) {
+    if (!valor || !idStore) return;
+    var store = document.getElementById(idStore);
     if (!store) {
         store = document.createElement('input');
-        store.id = idInput;
+        store.id = idStore;
         store.type = 'hidden';
         document.body.appendChild(store);
     }
     store.value = valor;
 }
 
-function GetOptsByGrid(idInput, dataOpts) {
-    var opts;
-    var store = document.getElementById(idInput) || 'defecto';
+function GetOptsFromData(idStore, dataOpts) {
+    if (!idStore || !dataOpts) return;
+    var store = document.getElementById(idStore) || 'defecto';
     for (var i = 0; i < dataOpts.length; i++) {
         if (store === 'defecto' && dataOpts[i].defecto) {
-            opts = { deny: dataOpts[i].deny, edit: dataOpts[i].edit };
-            break;
+            return dataOpts[i].opts;
         } else {
             if (dataOpts[i].grid === store.value) {
-                opts = { deny: dataOpts[i].deny, edit: dataOpts[i].edit };
-                break;
+                return dataOpts[i].opts;
             }
         }   
-    }    
-    return opts;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
