@@ -96,39 +96,13 @@ Cada grilla muestra estos datos:
 #### Detalle del paso 4
 Ya que cada pestana tendra su propia grilla con distintas restricciones (deny, edit), vamos a usar 2 funciones utiles que estan dentro del `ExportToExcel_Alternativo.js` para grabar la grilla seleccionada y recuperar las opts de una variable:
 ```javascript
-function SetGridSelected(valor, idStore) {
-    if (!valor || !idStore) return;
-    var store = document.getElementById(idStore);
-    if (!store) {
-        store = document.createElement('input');
-        store.id = idStore;
-        store.type = 'hidden';
-        document.body.appendChild(store);
-    }
-    store.value = valor;
-}
-
-function GetOptsFromStore(idStore, dataOpts) {
-    if (!idStore || !dataOpts) return;
-    var store = document.getElementById(idStore) || 'defecto';
-    for (var i = 0; i < dataOpts.length; i++) {
-        if (store === 'defecto' && dataOpts[i].defecto)
-            return dataOpts[i].opts;
-        else {
-            if (dataOpts[i].grid === store.value)
-                return dataOpts[i].opts;
-        }   
-    }
-}
-```
-```javascript
 // valor: es el nombre o id de la grilla.
 // idStore: es el id de un elemento input[text] donde se guardara y recuperara la grilla seleccionada.
 SaveGridId(valor, idStore);
 
 // idStore: es el id de un elemento input[text] donde se guardara y recuperara la grilla seleccionada.
 // dataOpts: es la fuente de conocimiento, donde estan guardados todas las restricciones de las grillas.
-GetOptsFromGridId(idStore, dataOpts);
+GetOptsFromData(idStore, dataOpts);
 ```
 Con lo cual las pestanas seran (ejemplo):
 ```html
@@ -139,7 +113,7 @@ Con lo cual las pestanas seran (ejemplo):
 ```
 <br/>
 #### Detalle del paso 5
-Es la variable donde estara todas las restriciones (opts) de las grillas. Por ejemplo, hay 3 grillas arriba:
+Es la variable donde estarán todas las restriciones (opts) de las grillas. Por ejemplo, hay 3 grillas arriba:
 ```javascript
 var dataOpts = [
     {
@@ -161,7 +135,7 @@ var dataOpts = [
         grid: 'GRILLA_03'
     }
 ];
-// En el ultimo caso, desde el ejemplo, se debe exportar todas las columnas.
+// En el ultimo caso, desde el ejemplo podria exportar todas las columnas.
 ```
 Se tiene que insertar en la etiqueta html del Designer de forma minificada para ocupar menos espacio (borrando espacios, comentarios).
 <br/>
@@ -169,7 +143,7 @@ Se tiene que insertar en la etiqueta html del Designer de forma minificada para 
 #### Detalle del paso 6
 Seria armar el html para dibujar el boton donde disparara la funcion de ExportToExcel.
 ```html
-<img src="./foto/xls-icon.png" onclick="ExportToExcel(0, GetOptsFromStore('store-grillas', dataOpts)"/>
+<img src="./foto/xls-icon.png" onclick="ExportToExcel(0, GetOptsFromData('store-grillas', dataOpts)"/>
 ```
 <br/>
 <br/>
