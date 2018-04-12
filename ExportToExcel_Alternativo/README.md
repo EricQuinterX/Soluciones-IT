@@ -94,46 +94,88 @@ Cada grilla muestra estos datos:
 
 
 #### Detalle del paso 4
-Ya que cada pestana tendra su propia grilla y cada una distintas restriccion (deny, edit), vamos a usar 2 funciones utiles:
+Ya que cada pestana tendra su propia grilla con distintas restricciones (deny, edit), vamos a usar 2 funciones utiles que estan dentro del `ExportToExcel_Alternativo.js` para grabar la grilla seleccionada y recuperar las opts de una variable:
 ```javascript
-function SetGridSelected(valor, idInput) {
-    var store = document.getElementById(idInput);
+function SetGridSelected(valor, idStore) {
+    if (!valor || !idStore) return;
+    var store = document.getElementById(idStore);
     if (!store) {
         store = document.createElement('input');
-        store.id = idInput;
+        store.id = idStore;
         store.type = 'hidden';
         document.body.appendChild(store);
     }
     store.value = valor;
 }
 
-function GetOptsByGrid(idInput, dataOpts) {
-    var opts;
-    var store = document.getElementById(idInput) || 'defecto';
+function GetOptsFromStore(idStore, dataOpts) {
+    if (!idStore || !dataOpts) return;
+    var store = document.getElementById(idStore) || 'defecto';
     for (var i = 0; i < dataOpts.length; i++) {
-        if (store === 'defecto' && dataOpts[i].defecto) {
-            opts = { deny: dataOpts[i].deny, edit: dataOpts[i].edit };
-            break;
-        } else {
-            if (dataOpts[i].grid === store.value) {
-                opts = { deny: dataOpts[i].deny, edit: dataOpts[i].edit };
-                break;
-            }
+        if (store === 'defecto' && dataOpts[i].defecto)
+            return dataOpts[i].opts;
+        else {
+            if (dataOpts[i].grid === store.value)
+                return dataOpts[i].opts;
         }   
-    }    
-    return opts;
+    }
 }
 ```
-Dentro del html puede ir una imagen u otro tag pero la accion que tiene que realizar debe ser de cada una.
+```javascript
+// valor: es el nombre o id de la grilla.
+// idStore: es el id de un elemento input[text] donde se guardara y recuperara la grilla seleccionada.
+SaveGridId(valor, idStore);
+
+// idStore: es el id de un elemento input[text] donde se guardara y recuperara la grilla seleccionada.
+// dataOpts: es la fuente de conocimiento, donde estan guardados todas las restricciones de las grillas.
+GetOptsFromGridId(idStore, dataOpts);
+```
+Con lo cual las pestanas seran (ejemplo):
 ```html
-<img src="../fotos/grilla01.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',ctl,null,false,0,0,false);SetGridSelected('GRILLA_01','grid-selected')"/>
-<img src="../fotos/grilla01.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',ctl,null,false,0,0,false);SetGridSelected('GRILLA_01','grid-selected')"/>
-<img src="../fotos/grilla01.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',ctl,null,false,0,0,false);SetGridSelected('GRILLA_01','grid-selected')"/>
+<img src="./grilla1.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,null,false,0,0,false);SaveGridId('GRILLA_01','store-grillas')"/>
+<img src="./grilla2.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,PA_GRILLA_02,false,0,0,false);SaveGridId('GRILLA_02','store-grillas')"/>
+<img src="./grilla3.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,PA_GRILLA_03,false,0,0,false);SaveGridId('GRILLA_03','store-grillas')"/>
 
 ```
+<br/>
+#### Detalle del paso 5
+Es la variable donde estara todas las restriciones (opts) de las grillas. Por ejemplo, hay 3 grillas arriba:
+```javascript
+var dataOpts = [
+    {
+        grid: 'GRILLA_01',
+        opts: {
+            deny: [1],
+            edit: [[6,GetTooltip],[7,GetTooltip]]
+        },
+        defecto: 1 // cuando entra por 1ra vez, cual es la grilla que exportara
+    },
+    {
+        grid: 'GRILLA_02',
+        opts: {
+            deny: [1,7],
+            edit: [[6,GetTooltip]]    
+        }  
+    },
+    {
+        grid: 'GRILLA_03'
+    }
+];
+// En el ultimo caso, desde el ejemplo, se debe exportar todas las columnas.
+```
+Se tiene que insertar en la etiqueta html del Designer de forma minificada para ocupar menos espacio (borrando espacios, comentarios).
+<br/>
 
+#### Detalle del paso 6
+Seria armar el html para dibujar el boton donde disparara la funcion de ExportToExcel.
+```html
+<img src="./foto/xls-icon.png" onclick="ExportToExcel(0, GetOptsFromStore('store-grillas', dataOpts)"/>
+```
+<br/>
+<br/>
+<br/>
 
-
+### Pruebas del ExportToExcel con BuildAjax
 <img src="media/filtro_grilla_01.png"><img src="media/excel_filtro_grilla_01.png">
 <br/>
 <img src="media/filtro_grilla_02.png"><img src="media/excel_filtro_grilla_02.png">
