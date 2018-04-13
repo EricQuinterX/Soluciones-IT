@@ -79,6 +79,23 @@ function changeTabsWithImage(idTab,clase){
 	tabs[idTab].src = path.substring(0, path.length - 5) + ext;
 }
 
+function changeTabsWithStyle(idTab,clase,classClicked){
+  var tabs = document.querySelectorAll("." + clase);
+  for (var i = 0; i < tabs.length; i++) {
+    changeStyleElement(tabs[i], (tabs[i].id === idTab), classClicked);
+  }
+}
+
+function changeStyleElement(elem, clicked, classClicked) {
+  if (clicked) {
+    elem.className = elem.className.split(' ')[0] + ' ' + classClicked;
+  } else {
+    elem.className = elem.className.split(' ')[0];
+  }
+}
+
+
+
 // Tilda o destilda toda una columna formada por checkbox segun el tercer parametro.
 function CheckTodaUnaColumna(tabla_ctl, nro_columna, bool){
 	
