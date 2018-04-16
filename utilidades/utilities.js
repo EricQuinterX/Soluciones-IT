@@ -254,3 +254,19 @@ function getValueHtml(field, ctl, storeId){
   if (!inputEng) return;
   setValueHtml(inputEng.value, storeId);
 }
+
+
+function DoClickTabWhenRefresh(tabId, defectoId, fn){
+  if (!tabId) tabId = defectoId;
+  if (!defectoId) return;
+  if (tabId === defectoId) {
+    if (fn) {
+      fn(defectoId);
+      return;
+    }
+  } else {
+    var elemento = document.getElementById(tabId);
+    if (!elemento) return;
+    setTimeout(function(){ elemento.click() },500);
+  }
+}
