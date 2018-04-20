@@ -7,7 +7,9 @@ Ejemplo:
 function cargarToolTips(arrayElementsId){
 	var tamanio = arrayElementsId.length;
 	for (var i = 0; i < tamanio; i++) {
-		document.getElementById(arrayElementsId[i][0]).title = arrayElementsId[i][1];
+    var elemento = document.getElementById(arrayElementsId[i][0]);
+    if (!elemento) continue;
+    elemento.title = arrayElementsId[i][1];
 	}
 }
 
@@ -19,31 +21,33 @@ Ejemplo:
 function setCursorPointer(arrayElementsId){
 	var tamanio = arrayElementsId.length;
 	for (var i = 0; i < tamanio; i++) {
-		document.getElementById(arrayElementsId[i]).style.cursor = "pointer";
+    var elemento = document.getElementById(arrayElementsId[i]);
+    if (!elemento) continue;
+    elemento.style.cursor = "pointer";
 	}
 }
 
 function changePic1(e) {
-    e.style.cursor = "pointer"; // cambio el puntero cuando esta encima del elemento
-    var tipos = ["png","gif","jpg"];
-    var i;
-    for (i = 0; i < tipos.length; i++){
-        if (e.src.split("."+tipos[i])[1] === ""){
-            break;
-        }
+  e.style.cursor = "pointer"; // cambio el puntero cuando esta encima del elemento
+  var tipos = ["png","gif","jpg"];
+  var i;
+  for (i = 0; i < tipos.length; i++){
+    if (e.src.split("."+tipos[i])[1] === ""){
+      break;
     }
+  }
 	e.src = [e.src.split("."+tipos[i])[0],"2."+tipos[i]].join("");
 }
 
 function changePic2(e){
-    var tipos = ["png","gif","jpg"];
-    var i;
+  var tipos = ["png","gif","jpg"];
+  var i;
     for (i = 0; i < tipos.length; i++){
-        if (e.src.split("."+tipos[i])[1] === ""){
-            break;
-        }
-    }
-	e.src = [e.src.split("2."+tipos[i])[0],"."+tipos[i]].join("");
+      if (e.src.split("."+tipos[i])[1] === ""){
+        break;
+      }
+  }
+  e.src = [e.src.split("2."+tipos[i])[0],"."+tipos[i]].join("");
 }
 
 
@@ -51,32 +55,32 @@ function changePic2(e){
 Cambia la imagen segun el id y el grupo de <img>
 */
 function changeTabs(idTab,clase){
-	var path, index;
-	var tabs = document.querySelectorAll("." + clase);
-	for (var i = 0; i < tabs.length; i++){
-		index = tabs[i].src.indexOf("2.png");
-		if (index > 0){
-			tabs[i].src = tabs[i].src.substring(0,index) + ".png";
-		}
-	}
-	path = tabs[idTab-1].src;
-	tabs[idTab-1].src = path.substring(0,path.indexOf(".png")) + "2.png";
+  var path, index;
+  var tabs = document.querySelectorAll("." + clase);
+  for (var i = 0; i < tabs.length; i++){
+    index = tabs[i].src.indexOf("2.png");
+    if (index > 0){
+      tabs[i].src = tabs[i].src.substring(0,index) + ".png";
+    }
+  }
+  path = tabs[idTab-1].src;
+  tabs[idTab-1].src = path.substring(0,path.indexOf(".png")) + "2.png";
 }
 /*
 Sirve para cambiar el src de un img en pantalla cuando hace click sobre ella.
-Por ejemplo se suele usar en pestañas	
+Por ejemplo se suele usar en pestaï¿½as	
 */
 function changeTabsWithImage(idTab,clase){
-	var tabs = document.querySelectorAll("." + clase);
-	var path = tabs[idTab].src;
-	var ext = path.substr(path.length - 4);
-	if (path.substr(path.length - 5) !== '2'+ext) return;
-	for (var i = 0; i < tabs.length; i++){
-		var src = tabs[i].src;
-		var last5chars = src.substr(src.length-5);
-		tabs[i].src = src.substring(0, src.length - (last5chars === '2'+ext ? 5 : 4)) + '2' + ext;
-	}
-	tabs[idTab].src = path.substring(0, path.length - 5) + ext;
+  var tabs = document.querySelectorAll("." + clase);
+  var path = tabs[idTab].src;
+  var ext = path.substr(path.length - 4);
+  if (path.substr(path.length - 5) !== '2'+ext) return;
+  for (var i = 0; i < tabs.length; i++){
+    var src = tabs[i].src;
+    var last5chars = src.substr(src.length-5);
+    tabs[i].src = src.substring(0, src.length - (last5chars === '2'+ext ? 5 : 4)) + '2' + ext;
+  }
+  tabs[idTab].src = path.substring(0, path.length - 5) + ext;
 }
 
 function changeTabsWithStyle(idTab,clase,classClicked){
@@ -136,34 +140,50 @@ function ChangeColorBorderAllTables(color){
 }*/
 
 function OcultarLabelEngage(texto){
-    var etiquetas = document.getElementsByTagName('div'); // labelDiv es el name de los labels de engage
-    for (var i = 0; i < etiquetas.length; i++) {
-        if (etiquetas[i].getAttribute("name") === 'labelDiv' && etiquetas[i].innerText === texto) {
-            etiquetas[i].style.visibility = 'hidden';
-            break;
-        }
-    } 
+  var etiquetas = document.getElementsByTagName('div'); // labelDiv es el name de los labels de engage
+  for (var i = 0; i < etiquetas.length; i++) {
+    if (etiquetas[i].getAttribute("name") === 'labelDiv' && etiquetas[i].innerText === texto) {
+      etiquetas[i].style.visibility = 'hidden';
+      break;
+    }
+  }
 }
 
 // Cambias el color de fondo del tag padre
 function CambiarColorFondo(clase, color){
-    var tds = document.querySelectorAll('.'+clase); 
-    for (var i=0; i<tds.length; i++){tds[i].parentNode.style.background = color;}
+  var tds = document.querySelectorAll('.'+clase); 
+  for (var i=0; i<tds.length; i++){
+    tds[i].parentNode.style.background = color;
+  }
 }
 
-
+/* Nombre: GrabarIdCheckboxSeleccionados(clase, campoTmt)
+ * Descrip: Busca todos los elementos <input id="valor1" class="checks1" type="checkbox"/>
+ * con la clase "checks1" para grabar su id concatenado con "|" en un campo de la TMT,
+ * al principio de la cadena de valores se graba la cantidad de elementos guardados 
+ * y ese numero devuelve la funciÃ³n.
+ * 
+ * Ejemplo:
+ *      GrabarIdCheckboxSeleccionados('checks1', 'VALORES_CHECKS') ==>>> 4
+ * 
+ *      VALORES_CHECKS = 4|mensajes|cajas|sillas|workflows
+ */
 function GrabarIdCheckboxSeleccionados(clase, campoTmt){
-    //var polizas = document.getElementsByClassName(clase);
-    var polizas = document.querySelectorAll('.'+clase);
-    var seleccionados = [];
-    for (var i = 0; i < polizas.length; i++){
-        if (polizas[i].checked){
-            seleccionados.push(polizas[i].id);
-        }
+  var polizas = document.querySelectorAll('.'+clase);
+  var seleccionados = [];
+  for (var i = 0; i < polizas.length; i++){
+    if (polizas[i].checked){
+      seleccionados.push(polizas[i].id);
     }
-    almacenarSeleccion(campoTmt, seleccionados.length + '|' + seleccionados.join('|'));
-    return seleccionados.length;
+  }
+  almacenarSeleccion(campoTmt, seleccionados.length + '|' + seleccionados.join('|'));
+  return seleccionados.length;
 }
+
+/* 
+ * 
+*/
+
 
 // Sirve para dimensionar el ancho de una columna de una grilla engage
 function ResizeWidthColumn(clase, px){
