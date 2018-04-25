@@ -109,9 +109,8 @@ Con lo cual las pestanas seran (ejemplo):
 <img src="./grilla1.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,null,false,0,0,false);SaveGridId('GRILLA_01','store-grillas')"/>
 <img src="./grilla2.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,PA_GRILLA_02,false,0,0,false);SaveGridId('GRILLA_02','store-grillas')"/>
 <img src="./grilla3.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,PA_GRILLA_03,false,0,0,false);SaveGridId('GRILLA_03','store-grillas')"/>
-
 ```
-<br/>
+  
 #### Detalle del paso 5
 Es la variable donde estarán todas las restriciones (opts) de las grillas. Por ejemplo, hay 3 grillas arriba:
 ```javascript
