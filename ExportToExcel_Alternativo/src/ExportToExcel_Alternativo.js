@@ -187,6 +187,13 @@ function GetTooltip(td){
     if (!hijo) return;
     td.innerHTML = hijo.title || hijo.innerText;
 }
+
+function RemoveImage(td){
+  var imgs = td.getElementsByTagName('img');
+  for (var i = 0; i < imgs.length; i++) {
+    imgs[i].parentNode.removeChild(imgs[i]);
+  }
+}
 /*
 function CambiarImagenATexto(td){
     var img = td.getElementsByTagName('IMG')[0];
