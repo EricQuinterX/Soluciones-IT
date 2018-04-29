@@ -20,7 +20,7 @@ Este parametro opcional es un objeto js que tiene 2 atributos:
 ```javascript
 { // Ejemplo
   deny: [1,3,9],
-  edit: [[2, mostrarTitle], [5, estadoToString]]
+  edit: [[2, GetTooltip], [5, GetTooltip]]
 }
 ```
 #### deny
@@ -28,16 +28,15 @@ Es un array numérico que representa las columnas que no seran exportadas.
 #### edit
 Es un array de arrays que edita/modifica el contenido de la celda en toda una o varias columnas específicas y/o quitar columnas.
 Dentro del sub-array tiene que estar el número de la columna y el nombre de la funcion transformadora.  
-Las funciones deben tener un parametro de entrada porque siempre se le manda un valor dentro del código. No necesariamente deben devolver un resultado ya que es una operación mutable. Por ejemplo una definición valida para una función puede ser:
+Las funciones deben tener un parametro de entrada que sera el elemento `<td>...</td>`. No necesariamente deben devolver un resultado ya que es una operación mutable que hace dentro. Por ejemplo las funciones debe ser de este estilo:  
 ```javascript 
-// Si la celda tiene un elemento label o div va a mostrar en el excel la descripcion del title si es que tiene.
-function GetTooltip(td){
-    var hijo = td.getElementsByTagName('label')[0] || td.getElementsByTagName('div')[0] || td.getElementsByTagName('IMG')[0];
-    if (!hijo) return;
-    td.innerHTML = hijo.title || hijo.innerText;
+function NombreFuncion(td){
+    // code...
 }
 ```
-> Usted puede crear la funcion que quiera para alterar los datos de todas las celdas de una columna.
+#### Funciones predefinidas para edit _(se agregaran mas a futuro si son necesarios)_
+- **GetTooltip**: reemplazara el innerHTML por el atributo **title** (si existe) del elemento hijo del `<td>` (celda).
+- **RemoveImage**: removera las imagenes que esten dentro del `<td>` (celda) si es que existe.  
 
 ## Uso típico
 Usualmente se quiere mostrar **X grillas separadas** en pantalla y brindar la posibilidad de exportar los datos. Cada uno tendra su boton o icono para exportarlo. Las grillas pueden ser de tipo Tabla, Grilla y Grilla Filtrada. Pero muchas veces las grillas traen imagenes, iconos, radio-buttons, checkbox o textos acotados con tooltip incorporados.
