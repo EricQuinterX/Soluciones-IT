@@ -36,16 +36,16 @@ function NombreFuncion(td){
 ```
 #### Funciones predefinidas para edit _(se agregaran mas a futuro si son necesarios)_
 - **GetTooltip**: reemplazara el innerHTML por el atributo **title** (si existe) del elemento hijo del `<td>` (celda).
-- **RemoveImage**: removera las imagenes que esten dentro del `<td>` (celda) si es que existe.  
+- **RemoveImage**: quitará las imagenes que esten dentro del `<td>` (celda) si existen.  
 
 ## Uso típico
-Usualmente se quiere mostrar **X grillas separadas** en pantalla y brindar la posibilidad de exportar los datos. Cada uno tendra su boton o icono para exportarlo. Las grillas pueden ser de tipo Tabla, Grilla y Grilla Filtrada. Pero muchas veces las grillas traen imagenes, iconos, radio-buttons, checkbox o textos acotados con tooltip incorporados.
-Si exportamos de la forma tradicional, apareceran imagenes rotas en el excel, ej:  
+Usualmente se quiere mostrar **X grillas separadas** en pantalla y ofrecer la posibilidad de exportar los datos. Cada uno tendra su boton o icono para exportarlo. Las grillas pueden ser de tipo Tabla, Grilla y Grilla Filtrada. Pero muchas veces las grillas traen imagenes, iconos, radio-buttons, checkbox o textos acotados con tooltip incorporados.
+Si exportamos de la forma tradicional, apareceran imagenes rotas, por ejemplo:  
 <img src="media/export_horrible.png">
 
 ### Pasos
 1. Copiar y pegar el archivo `/src/ExportToExcel_Alternativo.js` en la carpeta `Contenidos`.
-2. Poner un elemento **Tabla del Designer** en la pantalla. Setearle la ejecucion de un Stored Procedure.  
+2. Poner un elemento **Tabla del Designer** en la pantalla. Setearle la ejecución de un Stored Procedure.  
 3. Agregar un elemento **Html** y escribir la referencia del archivo js de arriba.  
 `<script src="./../Contenidos/ExportToExcel_Alternativo.js"></script>`
 4. Agregar otro elemento **Html** y dentro escribir alguna etiqueta con la **invocación de la función**.
@@ -54,7 +54,7 @@ Si exportamos de la forma tradicional, apareceran imagenes rotas en el excel, ej
 ### Invocación de la función
 Por ejemplo, queremos exportar esta grilla de tipo Tabla.  
 <img src="media/grilla_01_tabla.png">  
-Esta grilla tiene la columna 1 y 7 con imagenes, y la columna 6 y 7 con <b title="Los tooltips son utiles para no mostrar todo el texto en la pantalla">tooltips</b>. Lo que vamos hacer es remover la columna 1 y mostrar el atributo title (si existe) de la columna 6 y 7. Para eso en el 2do parametro de la función pasaremos:
+Esta grilla tiene las columnas 1 y 7 con imagenes, y las columnas 6 y 7 con <b title="Los tooltips son utiles para no mostrar todo el texto en la pantalla">tooltips</b>. Lo que vamos hacer es quitar la columna 1 _(ojo! no se modifica ningun dato de la grilla engage, sino que la nueva grilla no tendrá esa columna)_ y mostrar el atributo title (si existe) de la columna 6 y 7. Para eso en el 2do parametro de la función pasaremos:
 ```javascript
 {
   deny: [1],
@@ -72,10 +72,8 @@ Los links se muestran completos, la 1ra columna se omitió y la imagen de vigenc
 <br/>
 <br/>
 
-
-
 ## Uso Avanzado (BuildAjaxTable, BuildAjaxGrid, BuildAjaxFilteredGrid)
-Cuando un grupo de grillas se cargan por medio de Ajax, las **opts** de cada uno pueden variar.  
+Cuando un grupo de grillas se cargan por medio de Ajax, las **opts** de cada una pueden variar.  
 Por ejemplo, vamos a integrar 3 grillas de tipo grilla filtrada con el BuildAjaxFilteredGrid:
 <img src="media/buildajaxgridfiltered.png"><br/>
 Cada grilla muestra estos datos:  
@@ -96,22 +94,25 @@ Cada grilla muestra estos datos:
 Ya que cada pestana tendra su propia grilla con distintas restricciones (deny, edit), vamos a usar 2 funciones utiles que estan dentro del `ExportToExcel_Alternativo.js` para grabar la grilla seleccionada y recuperar las opts de una variable:
 ```javascript
 // valor: es el nombre o id de la grilla.
-// idStore: es el id de un elemento input[text] donde se guardara y recuperara la grilla seleccionada.
+// idStore: es el id de un elemento input[text] donde se guardará y recuperará la grilla seleccionada, si no existe se creará solo.
 SaveGridId(valor, idStore);
 
-// idStore: es el id de un elemento input[text] donde se guardara y recuperara la grilla seleccionada.
 // dataOpts: es la fuente de conocimiento, donde estan guardados todas las restricciones de las grillas.
 GetOptsFromData(idStore, dataOpts);
 ```
-Con lo cual las pestanas seran (ejemplo):
+Con lo cual las pestanas serán (ejemplo):
 ```html
 <img src="./grilla1.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,null,false,0,0,false);SaveGridId('GRILLA_01','store-grillas')"/>
 <img src="./grilla2.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,'PA_GRILLA_02',false,0,0,false);SaveGridId('GRILLA_02','store-grillas')"/>
 <img src="./grilla3.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,'PA_GRILLA_03',false,0,0,false);SaveGridId('GRILLA_03','store-grillas')"/>
 ```
+**store-grillas**: será el id del elemento input text donde guardará el valor 'GRILLA_01', 'GRILLA_02' o 'GRILLA_03' por ejemplo. Al principio cuando cargue la pantalla, el elemento no tendrá valor, entonces:  
+Qué grilla exportará si antes de seleccionar una pestaña le doy click al icono de exportar:question:  
+El proximo paso va al rescate :exclamation:
+
   
 #### Detalle del paso 5
-Es la variable donde estarán todas las restriciones (opts) de las grillas. Por ejemplo, hay 3 grillas arriba:
+Es la variable donde estarán todas las restriciones (opts) de cada grilla. Por ejemplo, hay 3 grillas arriba:
 ```javascript
 var dataOpts = [
     {
