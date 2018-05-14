@@ -26,9 +26,9 @@ Este parametro opcional es un objeto js que tiene 2 atributos:
 #### deny
 Es un array numérico que representa las columnas que no seran exportadas.
 #### edit
-Es un array de arrays que edita/modifica el contenido de la celda en toda una o varias columnas específicas y/o quitar columnas.
-Dentro del sub-array tiene que estar el número de la columna y el nombre de la funcion transformadora.  
-Las funciones deben tener un parametro de entrada que sera el elemento `<td>...</td>`. No necesariamente deben devolver un resultado ya que es una operación mutable que hace dentro. Por ejemplo las funciones debe ser de este estilo:  
+Es un array de arrays que edita/modifica el contenido de la celda en toda una o varias columnas específicas.
+Dentro del sub-array tiene que estar el número de la columna y el nombre de la función transformadora.  
+Las funciones deben tener un parametro de entrada que sera el elemento `<td>...</td>`. No necesariamente deben devolver un resultado ya que es una operación mutable. Por ejemplo las funciones debe ser de este estilo:  
 ```javascript 
 function NombreFuncion(td){
     // code...
@@ -37,6 +37,9 @@ function NombreFuncion(td){
 #### Funciones predefinidas para edit _(se agregaran mas a futuro si son necesarios)_
 - **GetTooltip**: reemplazara el innerHTML por el atributo **title** (si existe) del elemento hijo del `<td>` (celda).
 - **RemoveImage**: quitará las imagenes que esten dentro del `<td>` (celda) si existen.  
+<br/>
+<br/>
+
 
 ## Uso típico
 Usualmente se quiere mostrar **X grillas separadas** en pantalla y ofrecer la posibilidad de exportar los datos. Cada uno tendra su boton o icono para exportarlo. Las grillas pueden ser de tipo Tabla, Grilla y Grilla Filtrada. Pero muchas veces las grillas traen imagenes, iconos, radio-buttons, checkbox o textos acotados con tooltip incorporados.
@@ -61,8 +64,7 @@ Esta grilla tiene las columnas 1 y 7 con imagenes, y las columnas 6 y 7 con <b t
   edit: [[6,GetTooltip],[7,GetTooltip]]
 }
 ```
-La etiqueta con la invocación quedaria de esta forma:
-
+La etiqueta con la invocación quedaria de esta forma:  
 ```html
 <img src="./icon-excel.png" onclick="ExportToExcel(0,{deny:[1],edit:[[6,GetTooltip],[7,GetTooltip]]})"/>
 ```
@@ -78,20 +80,21 @@ Por ejemplo, vamos a integrar 3 grillas de tipo grilla filtrada con el BuildAjax
 <img src="media/buildajaxgridfiltered.png"><br/>
 Cada grilla muestra estos datos:  
 <img src="media/grilla_01_tabla.png"><img src="media/grilla_02_tabla.png"><img src="media/grilla_03_tabla.png"><br/>
+> Se muestra del tipo Tabla para ver todas sus columnas.
 
 ### Pasos
 1. Copiar y pegar el archivo `/src/ExportToExcel_Alternativo.js` en la carpeta `Contenidos`.
 2. Poner un elemento **Tabla del Designer** en la pantalla. Setearle la ejecucion de un Stored Procedure por default.  
 3. Agregar un elemento html y escribir la referencia del archivo js de arriba.  
 `<script src="./../Contenidos/ExportToExcel_Alternativo.js"></script>`
-4. Agregar etiquetas html que representaran las pestañas para cambiar de grillas.
+4. Agregar etiquetas html que representen las pestañas para cambiar de grilla.
 5. Agregar 1 etiqueta html que tendrá las opts de distintas grillas dentro del BuildAjax, llamado **dataOpts**.
 6. Agregar otro elemento html que sera el icono para la **Invocación del ExportToExcel**.
 7. Validar el trámite y limpiar la cache del navegador.
 
 
 #### Detalle del paso 4
-Ya que cada pestana tendra su propia grilla con distintas restricciones (deny, edit), vamos a usar 2 funciones utiles que estan dentro del `ExportToExcel_Alternativo.js` para grabar la grilla seleccionada y recuperar las opts de una variable:
+Ya que cada pestaña tendrá su codigo js para mostrar su grilla, usaremos 2 funciones utiles que estan dentro del `ExportToExcel_Alternativo.js` para guardar el id de la grilla seleccionada en una variable y recuperar las opts de la variable (id):  
 ```javascript
 // valor: es el nombre o id de la grilla.
 // idStore: es el id de un elemento input[text] donde se guardará y recuperará la grilla seleccionada, si no existe se creará solo.
@@ -100,19 +103,20 @@ SaveGridId(valor, idStore);
 // dataOpts: es la fuente de conocimiento, donde estan guardados todas las restricciones de las grillas.
 GetOptsFromData(idStore, dataOpts);
 ```
-Con lo cual las pestanas serán (ejemplo):
+Uno de los codigos posibles de las pestañas de arriba son:
 ```html
 <img src="./grilla1.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,null,false,0,0,false);SaveGridId('GRILLA_01','store-grillas')"/>
 <img src="./grilla2.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,'PA_GRILLA_02',false,0,0,false);SaveGridId('GRILLA_02','store-grillas')"/>
 <img src="./grilla3.png" onclick="BuildAjaxFilteredGrid('PA_GRILLA_01',1245,'PA_GRILLA_03',false,0,0,false);SaveGridId('GRILLA_03','store-grillas')"/>
 ```
-**store-grillas**: será el id del elemento input text donde guardará el valor 'GRILLA_01', 'GRILLA_02' o 'GRILLA_03' por ejemplo. Al principio cuando cargue la pantalla, el elemento no tendrá valor, entonces:  
-Qué grilla exportará si antes de seleccionar una pestaña le doy click al icono de exportar:question:  
-El proximo paso va al rescate :exclamation:
+
+> **store-grillas**: será el id del elemento input text donde guardará el valor 'GRILLA_01', 'GRILLA_02' o 'GRILLA_03' por ejemplo. Al principio cuando cargue la pantalla, el elemento no tendrá valor, entonces:  
+Qué grilla exportará si antes de seleccionar una pestaña le doy click al icono de exportar :anger:  
+En los proximos pasos esta la solución :sparkles:
 
   
 #### Detalle del paso 5
-Es la variable donde estarán todas las restriciones (opts) de cada grilla. Por ejemplo, hay 3 grillas arriba:
+Es la variable donde estarán todas las restriciones (opts) de cada grilla. Por ejemplo las 3 grillas de arriba:
 ```javascript
 var dataOpts = [
     {
@@ -134,16 +138,17 @@ var dataOpts = [
         grid: 'GRILLA_03'
     }
 ];
-// En el ultimo caso, desde el ejemplo podria exportar todas las columnas.
+// GRILLA_03 exportará todas las columnas.
 ```
 Se tiene que insertar en la etiqueta html del Designer de forma minificada para ocupar menos espacio (borrando espacios, comentarios).
 <br/>
 
 #### Detalle del paso 6
-Seria armar el html para dibujar el boton donde disparara la funcion de ExportToExcel.
+Seria armar el html para dibujar el boton donde se disparará la funcion de ExportToExcel:
 ```html
-<img src="./foto/xls-icon.png" onclick="ExportToExcel(0, GetOptsFromData('store-grillas', dataOpts)"/>
+<img src="./foto/xls-icon.png" onclick="ExportToExcel(0, GetOptsFromData('store-grillas', dataOpts))"/>
 ```
+> La unica diferencia con el **Uso Típico**, es que las restricciones (opts) salen de la ejecucion de la funcion **GetOptsFromData('store-grillas', dataOpts)** porque las grillas pueden tener diferentes opts, y salen de la variable del paso anterior.
 <br/>
 <br/>
 <br/>
